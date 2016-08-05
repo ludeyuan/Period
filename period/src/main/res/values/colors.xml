@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="period_card_text_state_menstruation">#ffffff</color>  //处于月经期上的文字的颜色
+    <color name="period_card_text_state_calculate">#ffffff</color>     //计算后，处于月经日文字的颜色
+    <color name="period_card_text_state_safe">#B5D95E</color>          //安全期，文字的颜色
+    <color name="period_card_text_state_dangerous">#FFF370</color>     //排卵期，文字的颜色
+
+    <color name="period_card_bg_state_menstruation">#FF4473</color>  //处于月经期上卡片的背景
+    <color name="period_card_bg_state_calculate">#FEB9CE</color>     //计算后，处于月经日的背景
+    <color name="period_card_bg_state_safe">#ffffff</color>          //安全期，背景
+    <color name="period_card_bg_state_dangerous">#ffffff</color>     //排卵期，背景
+</resources>
