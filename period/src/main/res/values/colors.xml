@@ -9,4 +9,7 @@
     <color name="period_card_bg_state_calculate">#FEB9CE</color>     //计算后，处于月经日的背景
     <color name="period_card_bg_state_safe">#ffffff</color>          //安全期，背景
     <color name="period_card_bg_state_dangerous">#ffffff</color>     //排卵期，背景
+
+    <color name="period_line">#dddddd</color>  //线的颜色
+    <color name="period_item_bg">#ffffff</color>
 </resources>

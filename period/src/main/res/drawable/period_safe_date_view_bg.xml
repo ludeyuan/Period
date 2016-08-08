@@ -6,11 +6,11 @@
         android:endColor="@color/period_card_bg_state_safe"
         android:startColor="@color/period_card_bg_state_safe" />
     <!--  定义控件内容到边界的距离（到四条边界的距离都是7）   -->
-    <padding
-        android:bottom="5dp"
-        android:left="5dp"
-        android:right="5dp"
-        android:top="5dp" />
+    <!--<padding-->
+        <!--android:bottom="5dp"-->
+        <!--android:left="5dp"-->
+        <!--android:right="5dp"-->
+        <!--android:top="5dp" />-->
     <!--  定义圆角（圆角半径是8）   -->
     <corners android:radius="4dp" />
     <stroke

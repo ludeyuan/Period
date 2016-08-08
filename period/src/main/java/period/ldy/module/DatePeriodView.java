@@ -2,6 +2,8 @@ package period.ldy.module;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
 import android.widget.GridLayout;
 
 import java.text.SimpleDateFormat;
@@ -29,6 +31,7 @@ public class DatePeriodView extends GridLayout {
     private DateCardModule[] mDateCardList = new DateCardModule[TOTAL_NUM];
     private int mLastMonthDays, mCurMonthDays;   //上个月、这个月的天数
     private MenstruationCalculate mMenstruationCalculate;
+    private DateClickListener mDateClickListener;
 
     private boolean mNeedInitCards = true;//需要初始化日期
     private MenstruationModel mInitMenstruationModel;
@@ -84,9 +87,11 @@ public class DatePeriodView extends GridLayout {
                 dayCount++;
             }
         }
+        setListener();
     }
 
-    public void initPeriodData(MenstruationModel menstruationModel) {
+    public void initPeriodData(MenstruationModel menstruationModel,DateClickListener dateClickListener) {
+        mDateClickListener=dateClickListener;
         mInitMenstruationModel = menstruationModel;
         calculateDate();
         Date date = new Date();
@@ -99,6 +104,51 @@ public class DatePeriodView extends GridLayout {
         ArrayList<MenstruationModel> list = mMenstruationCalculate.calculateMt(menstruationModel,nowDate,nextDate);
         list.add(menstruationModel);
         caculateType(list);
+    }
+
+    private void setListener(){
+        //设置点击事件，上个月和下个月不能显示
+        for(int i=0;i<=mLastMonthDays;i++){
+            mDateCard[i].setOnClickListener(null);
+        }
+        for(int i=mLastMonthDays+1;i<=mLastMonthDays+mCurMonthDays;i++){
+            final int position = i;
+            mDateCard[i].setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for(int j=mLastMonthDays+1;j<=mLastMonthDays+mCurMonthDays;j++){
+                        //把选中的日期的背景设置成带红色的框，没有变成白色，并把当前的日期返回
+                        if(position==j){
+                            //点击的日期是当前的日期
+                            mDateCardList[j].mIsClick = true;
+                            dealClickDateCard(mDateCardList[position]);
+                        }else{
+                            mDateCardList[j].mIsClick = false;
+                        }
+                        mDateCard[j].onClick(mDateCardList[j].mIsClick);
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 处理点击后的日期
+     */
+    private void dealClickDateCard(DateCardModule dateCardModule){
+        long clickDay = getNowDate(dateCardModule.date);
+        //如果选中的日期超过了当前的日期，
+        if(null!=mDateClickListener){
+            long today = DateChange.getDate();
+            //小于今天
+            if(today<clickDay){
+                mDateClickListener.clickDayAfterToday(dateCardModule.isStart==1,dateCardModule.isStart==2);
+            }else if(today == clickDay){
+                mDateClickListener.clickDayEqualsToday(dateCardModule.isStart==1,dateCardModule.isStart==2);
+            }else{
+                mDateClickListener.clickDayBeforeToday(dateCardModule.isStart==1,dateCardModule.isStart==2);
+            }
+        }
     }
 
     /**
@@ -174,7 +224,7 @@ public class DatePeriodView extends GridLayout {
                 int position = isMenOrCal(mtmList, i);
                 if (mtmList.get(position).getBeginTime() > DateChange.dateTimeStamp(getYMD("yyyy-MM-dd"), "yyyy-MM-dd")) {
                     mDateCardList[i].type = PeriodType.TYPE_CALCULATE;//预测期
-                } else if (mtmList.get(position).getEndTime() < DateChange.dateTimeStamp(getYMD("yyyy-MM-dd"), "yyyy-MM-dd")) {
+                } else if (mtmList.get(position).getEndTime() <= DateChange.dateTimeStamp(getYMD("yyyy-MM-dd"), "yyyy-MM-dd")) {
                     mDateCardList[i].type = PeriodType.TYPE_MENSTRUATION;//经期
                     if(isStart(mtmList.get(position),i)){
                         mDateCardList[i].isStart = 1;
@@ -266,6 +316,7 @@ public class DatePeriodView extends GridLayout {
         for(int i=0; i<TOTAL_NUM; i++){
             mDateCard[i].initData(mDateCardList[i]);
         }
+        setListener();
         return getYearAndmonth();
     }
 
@@ -282,6 +333,7 @@ public class DatePeriodView extends GridLayout {
         for(int i=0; i<TOTAL_NUM; i++){
             mDateCard[i].initData(mDateCardList[i]);
         }
+        setListener();
         return getYearAndmonth();
     }
 
@@ -299,6 +351,7 @@ public class DatePeriodView extends GridLayout {
         for(int i=0; i<TOTAL_NUM; i++){
             mDateCard[i].initData(mDateCardList[i]);
         }
+        setListener();
         return getYearAndmonth();
     }
 
@@ -329,7 +382,8 @@ public class DatePeriodView extends GridLayout {
     private long getNowDate(int d) {
         mCalendar.setTime(mTodayDate);
         String date = mCalendar.get(Calendar.YEAR) + "-" + (mCalendar.get(Calendar.MONTH) + 1) + "-" + d;
-        return DateChange.dateTimeStamp(date, "yyyy-MM-dd");
+        long dealTime = DateChange.dateTimeStamp(date, "yyyy-MM-dd");
+        return dealTime;
     }
 
     /**
@@ -353,7 +407,7 @@ public class DatePeriodView extends GridLayout {
     private int isMenOrCal(List<MenstruationModel> mtmList, int position) {
         for(int i=0;i<mtmList.size();i++){
             if (getNowDate(mDateCardList[position].date) >= mtmList.get(i).getBeginTime() &&
-                    getNowDate(mDateCardList[position].date) < mtmList.get(i).getEndTime()) {
+                    getNowDate(mDateCardList[position].date) <= mtmList.get(i).getEndTime()) {
                 return i;
             }
         }
@@ -383,6 +437,7 @@ public class DatePeriodView extends GridLayout {
     }
 
     private boolean isEnd(MenstruationModel menstruationModel, int position) {
+        Log.i("DatePeriod", "结束的时间＝"+DateChange.timeStamp2Date(menstruationModel.getEndTime()+"",null));
         if (getNowDate(mDateCardList[position].date) == menstruationModel.getEndTime()) {
             return true;
         }

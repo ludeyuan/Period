@@ -91,6 +91,16 @@ public class DateCardView extends FrameLayout{
         setToDay(dateCardModule.isToday,dateCardModule.type);
         setStart(dateCardModule.isStart);
         setType(dateCardModule.type);
+        onClick(dateCardModule.mIsClick);
+    }
+
+    public void onClick(boolean isClick){
+
+        if(isClick){
+            mRootView.setBackgroundResource(R.drawable.date_view_select_bg);
+        }else{
+            mRootView.setBackgroundResource(R.drawable.period_safe_date_view_bg);
+        }
     }
 
     /**

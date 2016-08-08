@@ -44,9 +44,6 @@ public class MenstruationCalculate {
             endTime =endTime +model.getCycle() *DAY_LENGTH;
         }
 
-//        long startTime = nextDate - model.getCycle() * DAY_LENGTH;
-//        long endTime = nextDate + model.getCycle()*DAY_LENGTH;
-
         long durationDay = model.getDurationDay() * DAY_LENGTH;   //月经的持续时间
         long cyclerDay = model.getCycle()*DAY_LENGTH;
         while (startTime + durationDay <= endTime) {
@@ -59,11 +56,11 @@ public class MenstruationCalculate {
                     int dayInMonth = calendar.get(Calendar.DAY_OF_MONTH);
                     long lastMonth = nowDate + dayInMonth * dayInMonth;
                     menstruationModelList.add(getMenstruationModel(startTime,
-                            startTime + model.getDurationDay() * DAY_LENGTH, lastMonth, model));
+                            startTime + (model.getDurationDay()-1) * DAY_LENGTH, lastMonth, model));
                 }else if (startTime >= nowDate) {
                     //当前月份
                     menstruationModelList.add(getMenstruationModel(startTime,
-                            startTime + model.getDurationDay() * DAY_LENGTH, nowDate, model));
+                            startTime + (model.getDurationDay()-1) * DAY_LENGTH, nowDate, model));
                 } else {
                     //上个月
                     Calendar calendar = Calendar.getInstance();
@@ -72,7 +69,7 @@ public class MenstruationCalculate {
                     int dayInMonth = calendar.get(Calendar.DAY_OF_MONTH);
                     long lastMonth = nowDate - dayInMonth * dayInMonth;
                     menstruationModelList.add(getMenstruationModel(startTime,
-                            startTime + model.getDurationDay() * DAY_LENGTH, lastMonth, model));
+                            startTime + (model.getDurationDay()-1) * DAY_LENGTH, lastMonth, model));
                 }
             }
             startTime = startTime + cyclerDay;

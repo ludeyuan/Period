@@ -26,6 +26,109 @@
 
     </period.ldy.module.DatePeriodView>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="@color/period_line"
+        />
+
+    <RelativeLayout
+        android:id="@+id/period_container_layout_start"
+        android:layout_width="match_parent"
+        android:background="@color/period_item_bg"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/period_container_layout_start_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/period_line"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            />
+
+        <ImageView
+            android:id="@+id/period_container_image_start_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/dym_lai"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_toRightOf="@id/period_container_image_start_icon"
+            android:text="经期开始"
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true"
+            />
+
+        <ImageView
+            android:id="@+id/period_container_image_start_checkbox"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/period_checkbox_on"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/period_container_layout_end"
+        android:layout_width="match_parent"
+        android:background="@color/period_item_bg"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/period_container_layout_end_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/period_line"
+            android:layout_alignParentBottom="true"
+            />
+
+        <ImageView
+            android:id="@+id/period_container_image_end_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/dym_zou"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_toRightOf="@id/period_container_image_end_icon"
+            android:text="经期结束"
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true"
+            />
+
+        <ImageView
+            android:id="@+id/period_container_image_end_checkbox"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/period_checkbox_on"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            />
+
+
+    </RelativeLayout>
+
     <Button
         android:id="@+id/main_button_last"
         android:layout_width="match_parent"
