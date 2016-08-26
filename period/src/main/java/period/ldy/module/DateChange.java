@@ -52,6 +52,11 @@ public class DateChange {
         return 0;
     }
 
+    public static long dateTimeStamp(DateCardModule dateCardModule){
+        String dateStr = dateCardModule.year+"-"+dateCardModule.month+"-"+dateCardModule.date;
+        return dateTimeStamp(dateStr,"yyyy-MM-dd");
+    }
+
     /**
      * 获取当天日期时间
      * @return
@@ -80,6 +85,51 @@ public class DateChange {
         String t = String.valueOf(time/1000);
         return t;
     }
+
+    /**
+     * 把时间转换成DateCardModule
+     * @param time
+     * @param start true:经期开始 false表示经期结束
+     * @return
+     */
+    public static DateCardModule time2DateCardModule(long time,boolean start){
+        if(time<=0){
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH)+1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        //当前的日期
+        Date curDate = new Date();
+        calendar.setTime(curDate);
+        int curYear = calendar.get(Calendar.YEAR);
+        int curMonth = calendar.get(Calendar.MONTH)+1;
+        int curDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        boolean isToday = (year==curYear) && (month==curMonth) && (day==curDay);
+        boolean isMonth = (year==curYear) && (month==curMonth);
+        int periodStart = start?1:2;
+
+        DateCardModule dateCardModule = new DateCardModule(day,month,year,isToday,
+                PeriodType.TYPE_SAFE,periodStart,isMonth);
+        return dateCardModule;
+    }
+
+    /**
+     * 计算两个日期相隔的天数
+     * @param preDate 前一个日期
+     * @param curData 后一个日期
+     * @return 返回的是天数，后面的日期大返回正数，前面的日期大返回负数
+     */
+    public static int getDistanceDay(DateCardModule preDate,DateCardModule curData){
+        long preDataInt = dateTimeStamp(preDate.year+"-"+preDate.month+"-"+preDate.date,"yyyy-MM-dd");
+        long cuDataInt = dateTimeStamp(curData.year+"-"+curData.month+"-"+curData.date,"yyyy-MM-dd");
+        return (int)((cuDataInt-preDataInt)/DateConstants.DAY_TIME);
+    }
+
     /**
      * 计算两个日期相差天数
      * @return **周**天

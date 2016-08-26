@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         int num = 5;
         int cycle = 30;
-        String etLast = "2016-7-29";
+        String etLast = "2016-8-2";
 
         MenstruationModel mtm = new MenstruationModel();
         mtm.setBeginTime(DateChange.dateTimeStamp(etLast, "yyyy-MM-dd"));
@@ -111,10 +111,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mTimeText.setText(mDateCardView.clickToady());
         }else if(v==mStartCheckBox){
             //开始
-
+            mDateCardView.clickStart(true);
 
         }else if(v==mEndCheckBox){
             //结束
+            mDateCardView.clickEnd(true);
         }
     }
 }
